@@ -1,0 +1,35 @@
+.drag-drop-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+  
+.draggable-items,
+.drop-target {
+    border: 1px solid #ccc;
+    padding: 15px;
+    width: 300px;
+}
+  
+.draggable {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 8px;
+    cursor: grab;
+}
+  
+.draggable:active {
+    cursor: grabbing;
+}
+  
+.drop-target {
+    background-color: #e0f7fa;
+}
+  
+.dropped-item {
+    background-color: #dcedc8;
+    border: 1px solid #c5e1a5;
+    padding: 10px;
+    margin-bottom: 8px;
+}
