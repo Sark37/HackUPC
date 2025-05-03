@@ -15,6 +15,7 @@ interface EquipmentItem {
     row: number
     col: number
   }
+  isDragging?: boolean
 }
 
 interface DragOverCell {
@@ -126,9 +127,12 @@ export default function DataCenterDesigner() {
   const handleGridItemDragStart = (e: React.DragEvent, item: EquipmentItem) => {
     e.stopPropagation()
     console.log("Dragging from grid:", item)
+
+    // Mark the item as being dragged instead of removing it
+    setPlacedItems((current) => current.map((i) => (i.id === item.id ? { ...i, isDragging: true } : i)))
+
     setDraggedItem(item)
     setDraggedItemSource("grid")
-    setPlacedItems((current) => current.filter((i) => i.id !== item.id))
 
     // Deselect the item when starting to drag
     if (selectedItemId === item.id) {
@@ -154,24 +158,42 @@ export default function DataCenterDesigner() {
     if (!isValidPlacement(row, col, draggedItem.width, draggedItem.height)) {
       console.log("Invalid placement")
 
-      // If moving an existing item, put it back in its original position
+      // If moving an existing item, just remove the isDragging flag
       if (draggedItemSource === "grid") {
-        setPlacedItems((current) => [...current, draggedItem])
+        setPlacedItems((current) => current.map((i) => (i.id === draggedItem.id ? { ...i, isDragging: false } : i)))
       }
 
+      setDraggedItem(null)
+      setDraggedItemSource(null)
       return
     }
 
-    // Place the item
+    // If we're moving an existing item, remove it from its old position
+    if (draggedItemSource === "grid") {
+      setPlacedItems((current) => current.filter((i) => i.id !== draggedItem.id))
+    }
+
+    // Place the item at the new position
     const newItem = {
       ...draggedItem,
       position: { row, col },
+      isDragging: false,
     }
 
     console.log("Placing item:", newItem)
     setPlacedItems((current) => [...current, newItem])
     setDraggedItem(null)
     setDraggedItemSource(null)
+  }
+
+  // Handle drag end (in case the drop event doesn't fire)
+  const handleDragEnd = (e: React.DragEvent, itemId: string) => {
+    // If the drag operation ended without a valid drop, reset the item
+    if (draggedItemSource === "grid" && draggedItem && draggedItem.id === itemId) {
+      setPlacedItems((current) => current.map((i) => (i.id === itemId ? { ...i, isDragging: false } : i)))
+      setDraggedItem(null)
+      setDraggedItemSource(null)
+    }
   }
 
   // Handle clicking on an equipment item
@@ -196,10 +218,13 @@ export default function DataCenterDesigner() {
 
     // Check for overlaps with other items
     for (const item of placedItems) {
-      const { position, width: itemWidth, height: itemHeight } = item
+      // Skip items that are currently being dragged
+      if (item.isDragging) continue
 
       // Skip if this is the item being moved
       if (draggedItemSource === "grid" && draggedItem && item.id === draggedItem.id) continue
+
+      const { position, width: itemWidth, height: itemHeight } = item
 
       // Skip if position is undefined (shouldn't happen, but TypeScript safety)
       if (!position) continue
@@ -327,7 +352,7 @@ export default function DataCenterDesigner() {
 
           {/* Placed equipment layer */}
           {placedItems.map((item) => {
-            const { id, alt, width, height, position, color } = item
+            const { id, alt, width, height, position, color, isDragging } = item
 
             // Skip if position is undefined
             if (!position) return null
@@ -354,9 +379,11 @@ export default function DataCenterDesigner() {
                   cursor: "move",
                   zIndex: isSelected ? 20 : 10,
                   transition: "border-color 0.2s, box-shadow 0.2s",
+                  opacity: isDragging ? 0.5 : 1, // Make the item semi-transparent when dragging
                 }}
                 draggable
                 onDragStart={(e) => handleGridItemDragStart(e, item)}
+                onDragEnd={(e) => handleDragEnd(e, id)}
                 onClick={(e) => handleItemClick(e, id)}
               >
                 <div
