@@ -1,0 +1,16 @@
+id,name,type,power_consumption,power_generation,water_consumption,water_generation,heat_generation,cooling_capacity,storage_capacity,processing_power,efficiency,uptime,flow_rate,max_capacity,description,requiredWaterLevel
+windmill,Windmill,power-generator,0,100,0,0,5,0,0,0,85,92,0,0,A renewable energy source that generates power from wind.,0
+nuclear-plant,Nuclear Plant,power-generator,0,500,20,0,200,0,0,0,95,99,0,0,A high-output power generator that requires water for cooling.,15
+solar-panel,Solar Panel,power-generator,0,75,0,0,10,0,0,0,80,75,0,0,A clean energy source that generates power from sunlight.,0
+coal-plant,Coal Plant,power-generator,0,300,15,0,150,0,0,0,65,98,0,0,A traditional power plant that burns coal to generate electricity.,10
+network-rack,Data Rack,power-consumer,50,0,15,0,40,0,500,120,0,0,0,0,Houses servers and networking equipment. Requires power and water cooling to prevent overheating.,10
+circuit-breaker-building,Circuit Breaker Building,power-distributor,5,0,0,0,10,0,0,0,98,99,0,400,Distributes power safely to connected components. Prevents overloading and protects connected equipment from power surges.,0
+hackupc-transformer,HackUPC Transformer,power-distributor,10,0,0,0,15,0,0,0,92,97,0,600,Transforms and regulates power for data center use. Increases efficiency of connected power consumers by 15%.,0
+water-treatment,Water Treatment,water-processor,20,0,30,50,5,10,0,0,90,95,40,100,Processes and purifies water for data center use. Increases water quality and reduces consumption in connected systems.,20
+water-cooler,Water Cooler,cooling-system,30,0,20,0,0,50,0,0,85,95,25,75,Advanced cooling system that reduces heat in nearby components. More efficient with treated water and can prevent overheating in critical systems.,15
+water-tile,Water Tile,water-source,0,0,0,50,0,0,0,0,0,0,50,200,A natural water source that can be tapped for cooling and processing.,0
+water-tile-with-pipe,Water Tile with Pipe,water-source-power,10,0,0,60,0,0,0,0,0,0,60,250,A water source with built-in extraction pipe. Requires power to operate.,0
+live-wire,Power Wire,power-wire,0,0,0,0,1,0,0,0,99,0,0,200,Transmits power between components. Changes appearance when powered.,0
+live-wire-corner,Power Wire Corner,power-wire,0,0,0,0,1,0,0,0,99,0,0,200,Corner power wire for creating 90-degree turns in power lines.,0
+water-pipe-straight,Water Pipe Straight,water-pipe,0,0,0,0,0,0,0,0,0,0,40,0,Transports water between components.,0
+water-pipe-bend,Water Pipe Bend,water-pipe,0,0,0,0,0,0,0,0,0,0,40,0,Corner water pipe for creating 90-degree turns.,0
